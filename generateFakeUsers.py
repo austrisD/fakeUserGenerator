@@ -4,6 +4,7 @@ import random
 # import femaleNames
 import SmallTuples
 import json
+from datetime import date
 
 
 maleDataBase = open('maleList.json','r')
@@ -48,10 +49,15 @@ while FakeUserCount != len(FakeUserList):
     lengthOfTuple = len(SmallTuples.countrySurnames[countryFrom])
     lastName = SmallTuples.countrySurnames[countryFrom][random.randrange(0, lengthOfTuple)]
 #give random age [create birth rate cone] include age displace by gender
-    ageCurrent = random.randrange(18, 70)
+    BirthYear = random.randrange(1945, 2005)
 #give random date
     birthDate = [random.randrange(1, 30),random.randrange(1, 12)]
+#calculate birth date
+    today = date.today()
+    ageCurrent = today.year - BirthYear - ((today.month, today.day) < (birthDate[1], birthDate[0]))
 #password hasher
+
+
 
     # print(f'gender:{gender} name: {name} surname:{lastName} age:{ageCurrent} birthDate:{birthDate} from: {countryFrom} CREATED!!!')
 
@@ -65,9 +71,9 @@ while FakeUserCount != len(FakeUserList):
     "countryFrom":countryFrom,
     "profilePhotoLocation":'c/photos/a/7856',
     "ageCurrent":ageCurrent,
-    "BirthYear":1991,
+    "BirthYear": BirthYear ,
     "birthDate":birthDate,
-    "relationStatus":'single',
+    "relationStatus": 'single' if random.choice([True, False]) else 'Taken',
     "friendList":[7895,2254,1254]
     })
 

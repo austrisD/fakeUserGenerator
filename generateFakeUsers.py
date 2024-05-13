@@ -13,26 +13,10 @@ femaleDateBase = open('femaleList.json','r')
 femaleNames = list(json.loads(femaleDateBase.read()).keys())
 maleNames =  list(json.loads(maleDataBase.read()).keys())
 
-
-
-
 startMessage = "Script Started Successful !!!"
 
 
-FakeUserList = [{
-    "userId":7856,
-    "hashPassword":'asdasfasdfsadfdsdasd65as53v4a5sdvas15df5a3sdcSAd3f63',
-    "name":'Austris',
-    "lastName":'Daugulis',
-    "gender":'male',
-    "countryFrom":'Latvia',
-    "profilePhotoLocation":'c/photos/a/7856',
-    "ageCurrent":33,
-    "BirthYear":1991,
-    "birthDate":[3,18],
-    "relationStatus":'single',
-    "friendList":[7895,2254,1254]
-    }]
+FakeUserList = []
 # prompt how many users need to generate?
 FakeUserCount = int(input('How many fake users need to generate? number:'))
 
@@ -40,8 +24,6 @@ FakeUserCount = int(input('How many fake users need to generate? number:'))
 """
 User generation loop.
 """
-
-
 
 
 print(f'starting to generate list with: {FakeUserCount} users')
@@ -71,7 +53,7 @@ while FakeUserCount != len(FakeUserList):
     birthDate = [random.randrange(1, 30),random.randrange(1, 12)]
 #password hasher
 
-    print(f'gender:{gender} name: {name} surname:{lastName} age:{ageCurrent} birthDate:{birthDate} from: {countryFrom} CREATED!!!')
+    # print(f'gender:{gender} name: {name} surname:{lastName} age:{ageCurrent} birthDate:{birthDate} from: {countryFrom} CREATED!!!')
 
     
     FakeUserList.append({

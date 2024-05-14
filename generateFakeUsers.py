@@ -39,7 +39,7 @@ while FakeUserCount != len(FakeUserList):
 
     genderBoolean = random.choice([True, False])
 
-# give random gender include gender imbalance 
+# give random gender include gender imbalance
     gender = "male" if genderBoolean else "female"
 #Give random EU country adjust by population.
     countryFrom = SmallTuples.country[random.randrange(0, len(SmallTuples.country))]
@@ -50,7 +50,7 @@ while FakeUserCount != len(FakeUserList):
     lastName = SmallTuples.countrySurnames[countryFrom][random.randrange(0, lengthOfTuple)]
 #give random age [create birth rate cone] include age displace by gender
     BirthYear = random.randrange(1945, 2005)
-#give random date
+#give random date.Take in count short months
     birthDate = [random.randrange(1, 30),random.randrange(1, 12)]
 #calculate birth date
     today = date.today()
@@ -68,7 +68,11 @@ while FakeUserCount != len(FakeUserList):
     "name":name,
     "lastName":lastName,
     "gender":gender,
+    "race":"caucasian",
+    "religion":"atheist",
+    "politicalAffiliation":(0,0),  #political axis XY  from -2 to 2+
     "countryFrom":countryFrom,
+    "cityLiveIn":'Riga',
     "profilePhotoLocation":'c/photos/a/7856',
     "ageCurrent":ageCurrent,
     "BirthYear": BirthYear ,

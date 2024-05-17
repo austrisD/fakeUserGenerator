@@ -1,18 +1,17 @@
-import requests
 import random
 # import maleNames
 # import femaleNames
-import SmallTuples
 import json
 from datetime import date
 
 
-maleDataBase = open('maleList.json','r')
-femaleDateBase = open('femaleList.json','r')
+namesFile = open('database/nameData.json')
+surnameFile = open('database/surnamesData.json')
 
+nameData = json.load(namesFile)
+surnameData = json.load(surnameFile)
 
-femaleNames = list(json.loads(femaleDateBase.read()).keys())
-maleNames =  list(json.loads(maleDataBase.read()).keys())
+countryList = list(nameData.keys()) #make country list from dict
 
 startMessage = "Script Started Successful !!!"
 
@@ -36,18 +35,25 @@ while FakeUserCount != len(FakeUserList):
     # print(f'    loop times: {loopCount}')
     # print(f'user generated: {len(FakeUserList)}')
 
-
     genderBoolean = random.choice([True, False])
 
-# give random gender include gender imbalance
-    gender = "male" if genderBoolean else "female"
+
 #Give random EU country adjust by population.
-    countryFrom = SmallTuples.country[random.randrange(0, len(SmallTuples.country))]
+    countryListLength = len(countryList)
+    countryFrom = countryList[random.randrange(0, countryListLength)]
+
 # give random name based on gender reduce probability for if have that name ,include name popularity
-    name = maleNames[random.randrange(0, len(maleNames))] if genderBoolean else femaleNames[random.randrange(0, len(femaleNames))]
+    randomNameFromCountry = random.randrange(1,len(nameData[countryFrom]))  #its a random number based on length of list inside country!!! 
+    name = nameData[countryFrom][randomNameFromCountry][2]
+# give gender based on name if specified if no search
+    checkIfGenderIncluded = nameData[countryFrom][randomNameFromCountry][0] == "Gender"
+    if checkIfGenderIncluded:
+        gender = nameData[countryFrom][randomNameFromCountry][randomNameFromCountry][1] # make it random if gender natural Name
+    else:
+        gender= "LGBT+"
 #give last name based on country, adjust by last name popularity + and foreign population from count include.
-    lengthOfTuple = len(SmallTuples.countrySurnames[countryFrom])
-    lastName = SmallTuples.countrySurnames[countryFrom][random.randrange(0, lengthOfTuple)]
+    randomSurname = random.randrange(0, len(surnameData[countryFrom])) #number generated from list length 
+    lastName = surnameData[countryFrom][randomSurname][1]
 #give random age [create birth rate cone] include age displace by gender
     BirthYear = random.randrange(1945, 2005)
 #give random date.Take in count short months
@@ -64,6 +70,7 @@ while FakeUserCount != len(FakeUserList):
     
     FakeUserList.append({
     "userId":loopCount,
+    "password":'safePassword#1234',
     "hashPassword":'asdasfasdfsadfdsdasd65as53v4a5sdvas15df5a3sdcSAd3f63',
     "name":name,
     "lastName":lastName,

@@ -8,3 +8,7 @@ testCode.py
 femaleList.json
 maleList.json
 UserFile.json
+nameData.json
+scrapeNamesFromSite.py
+FullNameData.json
+surnamesData.json

@@ -44,6 +44,7 @@ while FakeUserCount != len(FakeUserList):
 
 # give random name based on gender reduce probability for if have that name ,include name popularity
     randomNameFromCountry = random.randrange(1,len(nameData[countryFrom]))  #its a random number based on length of list inside country!!! 
+    print(f'test1: {countryFrom}:{randomNameFromCountry}')
     name = nameData[countryFrom][randomNameFromCountry][2]
 # give gender based on name if specified if no search
     checkIfGenderIncluded = nameData[countryFrom][randomNameFromCountry][0] == "Gender"
@@ -51,8 +52,10 @@ while FakeUserCount != len(FakeUserList):
         gender = nameData[countryFrom][randomNameFromCountry][randomNameFromCountry][1] # make it random if gender natural Name
     else:
         gender= "LGBT+"
-#give last name based on country, adjust by last name popularity + and foreign population from count include.
-    randomSurname = random.randrange(0, len(surnameData[countryFrom])) #number generated from list length 
+#give last name based on country, adjust by last name popularity + and foreign population from count include.    
+    randomSurname = random.randrange(0, len(surnameData[countryFrom])) #number generated from list length
+    print(f'test2: {randomSurname}')  #akrotiri-and-dhekelia troble
+    print(f'test3: {surnameData[countryFrom][randomSurname]}')
     lastName = surnameData[countryFrom][randomSurname][1]
 #give random age [create birth rate cone] include age displace by gender
     BirthYear = random.randrange(1945, 2005)
@@ -72,7 +75,7 @@ while FakeUserCount != len(FakeUserList):
     "userId":loopCount,
     "password":'safePassword#1234',
     "hashPassword":'asdasfasdfsadfdsdasd65as53v4a5sdvas15df5a3sdcSAd3f63',
-    "name":name,
+    "name":name,   #sometimes name is number !!!
     "lastName":lastName,
     "gender":gender,
     "race":"caucasian",

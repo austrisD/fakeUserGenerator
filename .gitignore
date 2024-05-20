@@ -1,5 +1,6 @@
 database/names
 database/namesbystate
+FakeUsers
 
 __pycache__
 .venv

@@ -3,13 +3,12 @@ import random
 # import femaleNames
 import json
 from datetime import date
+import bcrypt
+import os.path
 
 
-namesFile = open('database/nameData.json')
-surnameFile = open('database/surnamesData.json')
-
-nameData = json.load(namesFile)
-surnameData = json.load(surnameFile)
+nameData = json.load(open('database/nameData.json'))
+surnameData = json.load(open('database/surnamesData.json'))
 
 countryList = list(nameData.keys()) #make country list from dict
 
@@ -35,49 +34,60 @@ while FakeUserCount != len(FakeUserList):
     # print(f'    loop times: {loopCount}')
     # print(f'user generated: {len(FakeUserList)}')
 
-    genderBoolean = random.choice([True, False])
-
-
 #Give random EU country adjust by population.
     countryListLength = len(countryList)
-    countryFrom = countryList[random.randrange(0, countryListLength)]
+    countryListNumber = random.randrange(0,countryListLength)
+    countryFrom = countryList[countryListNumber]
 
 # give random name based on gender reduce probability for if have that name ,include name popularity
+    CheckNameLocation = nameData[countryFrom][0].index("Forename")
     randomNameFromCountry = random.randrange(1,len(nameData[countryFrom]))  #its a random number based on length of list inside country!!! 
-    print(f'test1: {countryFrom}:{randomNameFromCountry}')
-    name = nameData[countryFrom][randomNameFromCountry][2]
-# give gender based on name if specified if no search
-    checkIfGenderIncluded = nameData[countryFrom][randomNameFromCountry][0] == "Gender"
+    name = nameData[countryFrom][randomNameFromCountry][CheckNameLocation]
+
+    if name.isdigit(): #test if name string is numbers
+        print(f'name contains digits:  {name} from this country :{countryFrom} number:{randomNameFromCountry}')        
+# give gender based on name if specified if no search  #has to by fixed  "Male: 97%"   "Female: 98%"
+    checkIfGenderIncluded = nameData[countryFrom][0][1] == "Gender"
+    Gender = "no data"   # fix data or create a search function in other country
+   
     if checkIfGenderIncluded:
-        gender = nameData[countryFrom][randomNameFromCountry][randomNameFromCountry][1] # make it random if gender natural Name
-    else:
-        gender= "LGBT+"
+        Gender = nameData[countryFrom][randomNameFromCountry][1]
+        if not Gender.isalpha(): # check if gender contains %
+            genderPercentage = Gender.rsplit(":")
+            Gender = genderPercentage[0]
 #give last name based on country, adjust by last name popularity + and foreign population from count include.    
     randomSurname = random.randrange(0, len(surnameData[countryFrom])) #number generated from list length
-    print(f'test2: {randomSurname}')  #akrotiri-and-dhekelia troble
-    print(f'test3: {surnameData[countryFrom][randomSurname]}')
     lastName = surnameData[countryFrom][randomSurname][1]
+
 #give random age [create birth rate cone] include age displace by gender
     BirthYear = random.randrange(1945, 2005)
+
 #give random date.Take in count short months
     birthDate = [random.randrange(1, 30),random.randrange(1, 12)]
+
 #calculate birth date
     today = date.today()
     ageCurrent = today.year - BirthYear - ((today.month, today.day) < (birthDate[1], birthDate[0]))
+
 #password hasher
-
-
+    password = f'cln:{countryListNumber}CF:{countryFrom}rnfc:{randomNameFromCountry}CIGI:{checkIfGenderIncluded}G:{Gender}RS:{randomSurname}LN:{lastName}'
+    print(f'pass: {password}')
+    salt = bcrypt.gensalt(6)
+    print(f'salt: {salt}')
+    hashPassword = bcrypt.hashpw(bytes(4), salt)
+    
 
     # print(f'gender:{gender} name: {name} surname:{lastName} age:{ageCurrent} birthDate:{birthDate} from: {countryFrom} CREATED!!!')
 
     
     FakeUserList.append({
     "userId":loopCount,
-    "password":'safePassword#1234',
-    "hashPassword":'asdasfasdfsadfdsdasd65as53v4a5sdvas15df5a3sdcSAd3f63',
+    "password":password,
+    "salt":str(salt),
+    "hashPassword":str(hashPassword),
     "name":name,   #sometimes name is number !!!
     "lastName":lastName,
-    "gender":gender,
+    "gender":Gender,
     "race":"caucasian",
     "religion":"atheist",
     "politicalAffiliation":(0,0),  #political axis XY  from -2 to 2+
@@ -141,6 +151,22 @@ print(f'35>45: {ageRange35_45}')
 print(f'45>55: {ageRange45_55}')
 print(f'55>70: {ageRange55_70}')
 print('Creating json file with Users')
-f = open('UserFile.json','x')
+
+
+
+
+
+#file writing handler
+
+fileName = f'FakeUserFile'
+folderPath = 'FakeUsers'
+filenames = [file for file in os.listdir(folderPath) if os.path.isfile(os.path.join(folderPath, file))]
+
+if os.path.isfile(f'{folderPath}/{fileName}.json'):
+    fileName = f'{fileName}{len(filenames)}' 
+
+
+
+f = open(f'FakeUsers/{fileName}.json','x')
 f.write(f'{json.dumps(FakeUserList)}')
 f.close
